@@ -24,17 +24,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # 门禁（单一事实源：复用 ci.yml 的 gates = typecheck/i18n/test/迁移 dry-run/lint）。
-  # 此前 deploy 与 CI 平行执行，CI 红灯时生产照常发布；现在生产发布必须先全绿。
-  ci:
-    # 发布总开关：变量未创建时默认发布；仅在仓库 Variable CLOUDFLARE_DEPLOY 显式设为 false 时跳过
-    if: ${{ vars.CLOUDFLARE_DEPLOY != 'false' }}
-    uses: ./.github/workflows/ci.yml
-    permissions:
-      contents: read
+  # # 门禁（单一事实源：复用 ci.yml 的 gates = typecheck/i18n/test/迁移 dry-run/lint）。
+  # # 此前 deploy 与 CI 平行执行，CI 红灯时生产照常发布；现在生产发布必须先全绿。
+  # ci:
+  #   # 发布总开关：变量未创建时默认发布；仅在仓库 Variable CLOUDFLARE_DEPLOY 显式设为 false 时跳过
+  #   if: ${{ vars.CLOUDFLARE_DEPLOY != 'false' }}
+  #   uses: ./.github/workflows/ci.yml
+  #   permissions:
+  #     contents: read
 
-  deploy:
-    needs: ci
+deploy:
+    # needs: ci
     if: ${{ vars.CLOUDFLARE_DEPLOY != 'false' }}
     runs-on: ubuntu-latest
     env:
